@@ -1,0 +1,47 @@
+# Environment
+.env
+*.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.Python
+build/
+dist/
+.venv/
+env/
+venv/
+*.pyc
+
+# Database
+*.db
+*.sqlite3
+
+# Uploads (large media files — do not commit)
+backend/uploads/media/
+backend/uploads/data/
+backend/uploads/simulations/
+
+# Logs
+*.log
+logs/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# IDE
+# .vscode/ is committed — it sets the Python interpreter to the project venv
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# uv
+backend/uv.lock
