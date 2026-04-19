@@ -15,13 +15,24 @@ Endpoints:
 """
 
 import os
+import threading
 
 from flask import Blueprint, current_app, jsonify, request
 
 from app.database import db
 from app.models.campaign import Campaign
-from app.models.mention import Mention
 from app.models.performance_metric import PerformanceMetric
+from app.services.mention_ingestion_service import (
+    enrich_mentions as run_enrichment,
+    ingest_mentions,
+)
+from app.services import (
+    dashboard_service,
+    impact_analysis_service,
+    keyword_analysis_service,
+    marketing_report_service,
+    sentiment_analysis_service,
+)
 
 analytics_bp = Blueprint("analytics", __name__)
 
@@ -36,12 +47,23 @@ def _err(message: str, status: int = 400):
 
 # ── Mention upload ────────────────────────────────────────────────────────────
 
+def _run_enrichment_in_thread(app, campaign_id: str, mention_ids: list[str]) -> None:
+    with app.app_context():
+        run_enrichment(campaign_id, mention_ids=mention_ids)
+
+
 @analytics_bp.route("/mentions/upload", methods=["POST"])
 def upload_mentions():
     """
-    Accept a CSV/XLSX of mentions and persist them.
+    Accept a CSV/XLSX of mentions and persist them via mention_ingestion_service.
+
     Required columns: text
     Optional: source_platform, author_handle, created_at, engagement_count, url
+
+    Form params:
+        campaign_id (required)
+        enrich = "true" | "false" (default "false") — when true, queues a background
+                 LLM enrichment pass over the newly inserted rows.
     """
     campaign_id = request.form.get("campaign_id")
     if not campaign_id:
@@ -59,42 +81,61 @@ def upload_mentions():
     if ext not in ("csv", "xlsx"):
         return _err("Only CSV and XLSX files are supported")
 
+    data_folder = current_app.config["DATA_UPLOAD_FOLDER"]
+    os.makedirs(data_folder, exist_ok=True)
+
     try:
-        import pandas as pd
-        from io import BytesIO
-
-        raw = BytesIO(file.read())
-        df = pd.read_csv(raw) if ext == "csv" else pd.read_excel(raw)
-        df.columns = [c.strip().lower().replace(" ", "_") for c in df.columns]
-
-        if "text" not in df.columns:
-            return _err("File must contain a 'text' column")
-
-        data_folder = current_app.config["DATA_UPLOAD_FOLDER"]
-        os.makedirs(data_folder, exist_ok=True)
-
-        inserted = 0
-        for _, row in df.iterrows():
-            text = str(row.get("text", "")).strip()
-            if not text:
-                continue
-            mention = Mention(
-                campaign_id=campaign_id,
-                source_platform=str(row.get("source_platform", "")) or None,
-                text=text,
-                author_handle=str(row.get("author_handle", "")) or None,
-                engagement_count=int(row.get("engagement_count", 0) or 0),
-                url=str(row.get("url", "")) or None,
-            )
-            db.session.add(mention)
-            inserted += 1
-
-        db.session.commit()
-        return _ok({"inserted": inserted, "campaign_id": campaign_id})
-
+        summary = ingest_mentions(campaign_id, file.read(), file.filename)
     except Exception as e:
         db.session.rollback()
         return _err(f"Failed to parse file: {e}", 500)
+
+    if summary.get("errors"):
+        return _err("; ".join(summary["errors"]))
+
+    enrich_flag = (request.form.get("enrich") or "").lower() == "true"
+    if enrich_flag and summary.get("mention_ids"):
+        app = current_app._get_current_object()
+        thread = threading.Thread(
+            target=_run_enrichment_in_thread,
+            args=(app, campaign_id, summary["mention_ids"]),
+            daemon=True,
+        )
+        thread.start()
+        summary["enrichment_queued"] = True
+
+    return _ok(summary)
+
+
+@analytics_bp.route("/mentions/enrich", methods=["POST"])
+def enrich_uploaded_mentions():
+    """
+    Trigger background LLM enrichment for a campaign's mentions.
+
+    Request (JSON):
+        {
+          "campaign_id": "...",
+          "mention_ids": ["...", "..."]   // optional; omit to enrich all
+        }
+    """
+    data = request.get_json(silent=True) or {}
+    campaign_id = data.get("campaign_id")
+    if not campaign_id:
+        return _err("'campaign_id' is required")
+    if not Campaign.query.get(campaign_id):
+        return _err("Campaign not found", 404)
+
+    mention_ids = data.get("mention_ids") or []
+
+    app = current_app._get_current_object()
+    thread = threading.Thread(
+        target=_run_enrichment_in_thread,
+        args=(app, campaign_id, mention_ids),
+        daemon=True,
+    )
+    thread.start()
+    return _ok({"campaign_id": campaign_id, "enrichment_queued": True,
+                "mention_ids": mention_ids or "all"})
 
 
 # ── Performance upload ────────────────────────────────────────────────────────
@@ -175,75 +216,140 @@ def upload_performance():
 @analytics_bp.route("/dashboard/<campaign_id>", methods=["GET"])
 def get_dashboard(campaign_id):
     """
-    Assemble the full dashboard payload for a campaign.
-    Sprint 1: returns counts and stubs.
-    Sprint 3: routes through keyword/sentiment/impact services.
+    Assemble the full dashboard payload for a campaign via dashboard_service.
     """
     campaign = Campaign.query.get(campaign_id)
     if not campaign:
         return _err("Campaign not found", 404)
 
-    total_mentions = Mention.query.filter_by(campaign_id=campaign_id).count()
-    total_assets = campaign.creative_assets.count()
-
-    return _ok({
-        "campaign": campaign.to_dict(),
-        "overview": {
-            "total_mentions": total_mentions,
-            "total_assets": total_assets,
-            "positive_share": None,
-            "negative_share": None,
-            "neutral_share": None,
-            "impact_score": None,
-            "impact_type": "not_computed",
-        },
-        "top_keywords": [],
-        "top_phrases": [],
-        "sentiment_by_aspect": [],
-        "sentiment_by_day": [],
-        "creative_breakdown": [],
-        "recommendations": [],
-        "_note": "Full analysis available after Sprint 3 analytics services are wired in.",
-    })
+    payload = dashboard_service.build_dashboard(campaign_id)
+    if "error" in payload:
+        return _err(payload["error"], 404)
+    return _ok(payload)
 
 
 @analytics_bp.route("/keywords/<campaign_id>", methods=["GET"])
 def get_keywords(campaign_id):
-    """Sprint 3: will run keyword_analysis_service."""
+    """Run keyword_analysis_service for the campaign."""
     campaign = Campaign.query.get(campaign_id)
     if not campaign:
         return _err("Campaign not found", 404)
-    return _ok({"campaign_id": campaign_id, "top_words": [], "top_phrases": [],
-                "rising_terms": [], "negative_linked": [],
-                "_note": "Keyword analysis available in Sprint 3."})
+    return _ok(keyword_analysis_service.analyze_campaign(campaign_id))
 
 
 @analytics_bp.route("/sentiment/<campaign_id>", methods=["GET"])
 def get_sentiment(campaign_id):
-    """Sprint 3: will run sentiment_analysis_service."""
+    """Run sentiment_analysis_service for the campaign."""
     campaign = Campaign.query.get(campaign_id)
     if not campaign:
         return _err("Campaign not found", 404)
-    return _ok({"campaign_id": campaign_id, "overall": {}, "by_aspect": [],
-                "by_day": [], "emotion_split": {},
-                "_note": "Sentiment analysis available in Sprint 3."})
+    return _ok(sentiment_analysis_service.analyze_campaign(campaign_id))
 
 
 @analytics_bp.route("/impact/<campaign_id>", methods=["GET"])
 def get_impact(campaign_id):
-    """Sprint 3: will run impact_analysis_service."""
+    """Run impact_analysis_service for the campaign."""
     campaign = Campaign.query.get(campaign_id)
     if not campaign:
         return _err("Campaign not found", 404)
-    return _ok({"campaign_id": campaign_id, "impact_score": None,
-                "component_scores": {}, "asset_scores": [], "recommendations": [],
-                "_note": "Impact scoring available in Sprint 3."})
+    payload = impact_analysis_service.analyze_campaign(campaign_id)
+    if "error" in payload:
+        return _err(payload["error"], 404)
+    return _ok(payload)
 
 
 @analytics_bp.route("/report/generate", methods=["POST"])
 def generate_report():
-    """Sprint 4: connect to MiroFish report pipeline with dashboard summary as seed."""
-    return _ok({"_note": "Report generation integration available in Sprint 4."})
+    """
+    Generate a narrative marketing report from the dashboard snapshot using the
+    report_writer LLM. Synchronous — returns structured sections + markdown.
+
+    Request (JSON): {"campaign_id": "..."}
+    """
+    data = request.get_json(silent=True) or {}
+    campaign_id = data.get("campaign_id")
+    if not campaign_id:
+        return _err("'campaign_id' is required")
+    if not Campaign.query.get(campaign_id):
+        return _err("Campaign not found", 404)
+
+    report = marketing_report_service.generate_report(campaign_id)
+    if "error" in report:
+        return _err(report["error"], 404)
+    return _ok(report)
+
+
+@analytics_bp.route("/dashboard/<campaign_id>/export.md", methods=["GET"])
+def export_dashboard_markdown(campaign_id):
+    """
+    Export the dashboard as a markdown snapshot (no LLM, pure data rendering).
+    Useful for offline review, copy-paste into decks, or light-weight reporting.
+    """
+    campaign = Campaign.query.get(campaign_id)
+    if not campaign:
+        return _err("Campaign not found", 404)
+
+    payload = dashboard_service.build_dashboard(campaign_id)
+    md = _render_dashboard_markdown(payload)
+    return (md, 200, {"Content-Type": "text/markdown; charset=utf-8",
+                      "Content-Disposition": f'attachment; filename="campaign-{campaign_id}.md"'})
+
+
+def _render_dashboard_markdown(d: dict) -> str:
+    c = d["campaign"]
+    ov = d.get("overview", {})
+    sent = d.get("sentiment", {}).get("overall", {})
+    kw = d.get("keywords", {})
+    imp = d.get("impact", {})
+    recs = d.get("recommendations", [])
+
+    lines = [
+        f"# {c['name']} — {c['brand']}",
+        f"_Objective: {c.get('objective') or '—'}_\n",
+        "## Overview",
+        f"- **Mentions:** {ov.get('total_mentions', 0)}",
+        f"- **Creatives:** {ov.get('total_assets', 0)}",
+        f"- **Sentiment:** {round((sent.get('positive_share') or 0) * 100)}% positive · "
+        f"{round((sent.get('negative_share') or 0) * 100)}% negative · "
+        f"{round((sent.get('neutral_share') or 0) * 100)}% neutral",
+        f"- **Impact Score:** {ov.get('impact_score', '—')} ({ov.get('impact_type', 'n/a')})",
+        f"- **Top Theme:** {ov.get('top_theme') or '—'}",
+        f"- **Biggest Risk:** {ov.get('biggest_risk') or '—'}\n",
+    ]
+
+    if kw.get("top_phrases"):
+        lines.append("## Top Phrases")
+        for p in kw["top_phrases"][:15]:
+            lines.append(f"- {p['phrase']} ({p['count']})")
+        lines.append("")
+
+    if kw.get("rising_terms"):
+        lines.append("## Rising Terms")
+        for r in kw["rising_terms"][:10]:
+            lines.append(f"- {r['term']} +{round(r['growth'] * 100)}% ({r['first_half']} → {r['second_half']})")
+        lines.append("")
+
+    if kw.get("negative_linked"):
+        lines.append("## Risk Terms")
+        for r in kw["negative_linked"][:10]:
+            lines.append(f"- {r['term']} ({r['negative_count']} negative)")
+        lines.append("")
+
+    if imp.get("asset_scores"):
+        lines.append("## Creative Scoreboard")
+        for a in imp["asset_scores"][:15]:
+            lines.append(f"- **{a.get('filename') or a['asset_id'][:8]}** "
+                         f"({a['asset_type']}/{a.get('channel') or '—'}) — score {a['score']}, "
+                         f"+{a['positive']} / −{a['negative']} over {a['mention_count']} mentions")
+        lines.append("")
+
+    if recs:
+        lines.append("## Recommendations")
+        for r in recs:
+            lines.append(f"- **[{r['bucket'].upper()}]** {r['title']} — {r['detail']}")
+        lines.append("")
+
+    return "\n".join(lines)
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────

@@ -24,4 +24,6 @@ export const analyticsApi = {
   sentiment: (campaignId) => axios.get(`${BASE}/sentiment/${campaignId}`),
   impact: (campaignId) => axios.get(`${BASE}/impact/${campaignId}`),
   generateReport: (data) => axios.post(`${BASE}/report/generate`, data),
+  exportDashboardMarkdown: (campaignId) =>
+    axios.get(`${BASE}/dashboard/${campaignId}/export.md`, { responseType: 'blob' }),
 }

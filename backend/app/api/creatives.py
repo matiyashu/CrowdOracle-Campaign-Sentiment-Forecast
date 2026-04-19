@@ -14,6 +14,7 @@ Endpoints:
 """
 
 import os
+import threading
 import uuid
 
 from flask import Blueprint, current_app, jsonify, request
@@ -22,6 +23,7 @@ from werkzeug.utils import secure_filename
 from app.database import db
 from app.models.campaign import Campaign
 from app.models.creative_asset import CreativeAsset
+from app.services.creative_analysis_service import analyze_asset as run_analysis
 
 creatives_bp = Blueprint("creatives", __name__)
 
@@ -124,24 +126,46 @@ def by_campaign(campaign_id):
     return _ok([a.to_dict() for a in assets])
 
 
+def _run_analysis_in_thread(app, asset_id: str) -> None:
+    """Background worker that runs analysis under an app context."""
+    with app.app_context():
+        asset = CreativeAsset.query.get(asset_id)
+        if asset:
+            run_analysis(asset)
+
+
+def _kickoff_analysis(asset_id: str) -> None:
+    app = current_app._get_current_object()
+    thread = threading.Thread(
+        target=_run_analysis_in_thread,
+        args=(app, asset_id),
+        daemon=True,
+    )
+    thread.start()
+
+
 @creatives_bp.route("/<asset_id>/analyze", methods=["POST"])
 def analyze_asset(asset_id):
     """
     Trigger AI analysis of a creative asset.
-    Sprint 1: returns a stub response.
-    Sprint 2: will call creative_analysis_service and run in background.
+
+    Marks the asset as processing, then runs the creative_analysis_service in
+    a background thread. Poll GET /api/creatives/<asset_id> to read the result.
     """
     asset = CreativeAsset.query.get(asset_id)
     if not asset:
         return _err("Asset not found", 404)
 
-    # Stub for Sprint 1 — full implementation in Sprint 2
     asset.analysis_status = "processing"
+    asset.analysis_error = None
     db.session.commit()
+
+    _kickoff_analysis(asset_id)
+
     return _ok({
         "asset_id": asset_id,
         "status": "processing",
-        "message": "Analysis queued. Full analysis available in Sprint 2."
+        "message": "Analysis started. Poll GET /api/creatives/<asset_id> for result.",
     })
 
 
@@ -157,8 +181,13 @@ def batch_analyze():
         asset = CreativeAsset.query.get(aid)
         if asset:
             asset.analysis_status = "processing"
+            asset.analysis_error = None
             queued.append(aid)
     db.session.commit()
+
+    for aid in queued:
+        _kickoff_analysis(aid)
+
     return _ok({"queued": queued})
 
 

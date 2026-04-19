@@ -4,7 +4,7 @@ LLM Provider Registry.
 Routes LLM calls to the correct provider based on:
   1. Per-task routing saved in the active ProviderConfig record (DB).
   2. The active ProviderConfig's default model.
-  3. Fallback: env-var provider (backward compatible with existing MiroFish services).
+  3. Fallback: env-var provider (backward compatible with existing simulation services).
 
 Usage:
     from app.services.llm import get_provider
@@ -28,7 +28,7 @@ TASK_NAMES = [
     "creative_vision",   # image/video analysis
     "sentiment",         # sentiment & aspect extraction
     "report_writer",     # long-form report narrative
-    "simulation",        # MiroFish simulation LLM calls
+    "simulation",        # crowd-simulation LLM calls
     "transcript",        # audio/video transcription
     "chat",              # interactive Q&A / interaction view
     "keyword",           # keyword/phrase extraction
@@ -61,7 +61,7 @@ def _build_provider(provider_type: str, api_key: str, base_url: str | None, defa
 
 
 def _env_fallback_provider() -> BaseLLMProvider:
-    """Return a provider built purely from environment variables (MiroFish backward compat)."""
+    """Return a provider built purely from environment variables (legacy backward compat)."""
     from .providers.openai_provider import OpenAIProvider
     return OpenAIProvider(
         api_key=os.environ.get("LLM_API_KEY", ""),

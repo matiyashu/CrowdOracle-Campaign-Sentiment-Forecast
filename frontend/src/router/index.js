@@ -6,13 +6,16 @@ import SimulationRunView from '../views/SimulationRunView.vue'
 import ReportView from '../views/ReportView.vue'
 import InteractionView from '../views/InteractionView.vue'
 
-// CrowdOracle marketing intelligence views
+// BigBrother marketing intelligence views
 import CampaignListView from '../views/CampaignListView.vue'
 import CampaignDetailView from '../views/CampaignDetailView.vue'
+import CreativeLibraryView from '../views/CreativeLibraryView.vue'
+import DashboardView from '../views/DashboardView.vue'
+import ReportBuilderView from '../views/ReportBuilderView.vue'
 import ProviderSettingsView from '../views/ProviderSettingsView.vue'
 
 const routes = [
-  // ── MiroFish core routes (unchanged) ──────────────────────────────────────
+  // ── Core simulation routes (Home, Process, Simulation, Report) ───────────
   {
     path: '/',
     name: 'Home',
@@ -49,7 +52,7 @@ const routes = [
     props: true
   },
 
-  // ── CrowdOracle marketing intelligence routes ──────────────────────────────
+  // ── BigBrother marketing intelligence routes ──────────────────────────────
   {
     path: '/campaigns',
     name: 'CampaignList',
@@ -59,6 +62,24 @@ const routes = [
     path: '/campaign/:campaignId',
     name: 'CampaignDetail',
     component: CampaignDetailView,
+    props: true
+  },
+  {
+    path: '/campaign/:campaignId/creatives',
+    name: 'CreativeLibrary',
+    component: CreativeLibraryView,
+    props: true
+  },
+  {
+    path: '/campaign/:campaignId/dashboard',
+    name: 'Dashboard',
+    component: DashboardView,
+    props: true
+  },
+  {
+    path: '/campaign/:campaignId/report',
+    name: 'ReportBuilder',
+    component: ReportBuilderView,
     props: true
   },
   {

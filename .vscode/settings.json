@@ -1,7 +1,7 @@
 {
-  "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/Scripts/python.exe",
+  "python.defaultInterpreterPath": "C:\\Users\\prima\\AntiGravity Projects\\CrowdOracle\\backend\\.venv\\Scripts\\python.exe",
   "python.analysis.extraPaths": [
-    "${workspaceFolder}/backend"
+    "C:\\Users\\prima\\AntiGravity Projects\\CrowdOracle\\backend"
   ],
   "pylance.importStrategy": "fromEnvironment"
 }

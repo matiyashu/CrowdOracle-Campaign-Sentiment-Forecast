@@ -1,11 +1,12 @@
 <template>
   <div class="detail-container">
     <nav class="navbar">
-      <div class="nav-brand">CROWDORACLE</div>
+      <div class="nav-brand">BIGBROTHER</div>
       <div class="nav-links">
         <router-link to="/campaigns" class="nav-link">← All Campaigns</router-link>
         <router-link :to="`/campaign/${campaignId}/dashboard`" class="nav-link">Dashboard</router-link>
         <router-link :to="`/campaign/${campaignId}/creatives`" class="nav-link">Creatives</router-link>
+        <router-link :to="`/campaign/${campaignId}/report`" class="nav-link">Report</router-link>
       </div>
     </nav>
 

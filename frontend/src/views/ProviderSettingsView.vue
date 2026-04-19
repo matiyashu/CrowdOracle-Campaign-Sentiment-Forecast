@@ -1,7 +1,7 @@
 <template>
   <div class="providers-container">
     <nav class="navbar">
-      <div class="nav-brand">CROWDORACLE</div>
+      <div class="nav-brand">BIGBROTHER</div>
       <div class="nav-links">
         <router-link to="/campaigns" class="nav-link">← Campaigns</router-link>
       </div>

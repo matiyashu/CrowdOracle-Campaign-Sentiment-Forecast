@@ -1,7 +1,7 @@
 <template>
   <div class="campaigns-container">
     <nav class="navbar">
-      <div class="nav-brand">CROWDORACLE</div>
+      <div class="nav-brand">BIGBROTHER</div>
       <div class="nav-links">
         <router-link to="/" class="nav-link">← Simulation</router-link>
         <router-link to="/settings/providers" class="nav-link">Providers</router-link>
