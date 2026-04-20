@@ -26,6 +26,7 @@ venv/
 backend/uploads/media/
 backend/uploads/data/
 backend/uploads/simulations/
+backend/uploads/projects/
 
 # Logs
 *.log

@@ -1,7 +1,7 @@
 {
-  "name": "bigbrother-frontend",
+  "name": "crowdoracle-frontend",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0-rc1",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/core": "^12.0.0",
     "axios": "^1.14.0",
     "d3": "^7.9.0",
+    "pinia": "^2.3.0",
     "vue": "^3.5.24",
     "vue-i18n": "^11.3.0",
     "vue-router": "^4.6.3"
