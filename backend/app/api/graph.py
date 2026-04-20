@@ -566,15 +566,32 @@ def list_tasks():
 def get_graph_data(graph_id: str):
     """Return the graph data (nodes and edges)."""
     try:
+        # Demo mode bypass: if this is a seeded demo graph, serve the canned
+        # snapshot that /api/demo/load wrote to disk — no Zep roundtrip.
+        if graph_id.startswith('demo_graph_'):
+            import json as _json
+            slug = graph_id[len('demo_graph_'):]
+            snapshot_path = os.path.join(
+                Config.UPLOAD_FOLDER, 'simulations', f'sim_demo_{slug}', 'graph_snapshot.json'
+            )
+            if not os.path.exists(snapshot_path):
+                return jsonify({
+                    "success": False,
+                    "error": f"Demo graph snapshot not found: {graph_id}"
+                }), 404
+            with open(snapshot_path, 'r', encoding='utf-8') as f:
+                snapshot = _json.load(f)
+            return jsonify({"success": True, "data": snapshot})
+
         if not Config.ZEP_API_KEY:
             return jsonify({
                 "success": False,
                 "error": t('api.zepApiKeyMissing')
             }), 500
-        
+
         builder = GraphBuilderService(api_key=Config.ZEP_API_KEY)
         graph_data = builder.get_graph_data(graph_id)
-        
+
         return jsonify({
             "success": True,
             "data": graph_data

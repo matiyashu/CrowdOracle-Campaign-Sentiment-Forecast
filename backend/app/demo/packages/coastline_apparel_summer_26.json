@@ -99,5 +99,60 @@
     { "date": "2026-05-08", "channel": "instagram", "market": "US", "spend": 4900, "impressions": 212000, "reach": 151000, "clicks": 5110, "ctr": 0.0241, "engagements": 13100, "engagement_rate": 0.0618, "conversions": 82,  "cpa": 59.76, "cvr": 0.0160, "revenue": 12700, "roas": 2.59 },
     { "date": "2026-05-09", "channel": "youtube",  "market": "UK", "spend": 3400, "impressions": 198000, "reach": 174000, "clicks": 1780, "ctr": 0.0090, "engagements":  2600, "engagement_rate": 0.0131, "conversions": 22,  "cpa": 154.5, "cvr": 0.0124, "revenue": 3100,  "roas": 0.91 },
     { "date": "2026-05-10", "channel": "tiktok",   "market": "AU", "spend": 1500, "impressions": 148000, "reach": 118000, "clicks": 2150, "ctr": 0.0145, "engagements": 10100, "engagement_rate": 0.0682, "conversions": 22,  "cpa": 68.18, "cvr": 0.0102, "revenue": 3200,  "roas": 2.13 }
-  ]
+  ],
+  "reality_seed": {
+    "slug": "coastline",
+    "project_name": "Demo · Coastline Summer 26 brief",
+    "simulation_requirement": "Rehearse the Summer 26 capsule launch on simulated Twitter and Reddit across US/UK/AU audiences. Track how creative hooks, creator voices, and price objections surface over the first 14 days.",
+    "files": [
+      { "filename": "coastline_summer_brief.pdf", "size": 184320 },
+      { "filename": "coastline_creative_deck.pdf", "size": 2410800 }
+    ],
+    "ontology_analysis_summary": "Coastline universe: 1 Brand, 3 Products, 4 Creatives, 2 Creators, 3 Audience segments, 2 Competitors. 9 relation types (launches, promotes, targets, created_by, competes_with, loved_by, criticized_by, mentioned_in, shipped_to).",
+    "entities_count": 42,
+    "profiles_count": 42,
+    "entity_types": ["Brand", "Product", "Creative", "Creator", "Audience", "Competitor"],
+    "total_rounds": 24,
+    "current_round": 24,
+    "total_simulation_hours": 336,
+    "minutes_per_round": 840
+  },
+  "graph_snapshot": {
+    "nodes": [
+      { "uuid": "n_coastline", "name": "Coastline",         "labels": ["Entity","Brand"],     "summary": "B2C apparel brand launching the Summer 26 capsule across IG, TikTok, and YouTube in US/UK/AU.", "attributes": { "tier": "mid-premium", "founded": "2019" }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_linen_set", "name": "Linen set",         "labels": ["Entity","Product"],   "summary": "Hero SKU: linen shirt + wide-leg trouser + straw hat bundle.", "attributes": { "price_usd": 248 }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_linen_tee", "name": "Linen tee",         "labels": ["Entity","Product"],   "summary": "Standalone linen tee — most mentioned SKU.",                     "attributes": { "price_usd": 98 },  "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_trousers",  "name": "Wide-leg trousers", "labels": ["Entity","Product"],   "summary": "Linen wide-leg trousers, launched AU-first.",                   "attributes": { "price_usd": 168 }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_hero_img",  "name": "Hero sunset",       "labels": ["Entity","Creative"],  "summary": "Instagram hero image on rocky coast, golden-hour, linen shirt in warm cream tones.", "attributes": { "channel": "instagram", "cta": "Shop the drop" }, "created_at": "2026-05-02T10:00:00Z" },
+      { "uuid": "n_tt_unbox",  "name": "TikTok unbox",      "labels": ["Entity","Creative"],  "summary": "30s creator-led unboxing with tactile product closeups.",       "attributes": { "channel": "tiktok", "duration_s": 30 }, "created_at": "2026-05-03T11:00:00Z" },
+      { "uuid": "n_yt_look",   "name": "YT lookbook",       "labels": ["Entity","Creative"],  "summary": "90s cinematic YouTube lookbook with aerial coast drone footage.","attributes": { "channel": "youtube", "duration_s": 90 }, "created_at": "2026-05-04T12:00:00Z" },
+      { "uuid": "n_ig_carou",  "name": "IG carousel",       "labels": ["Entity","Creative"],  "summary": "Flat-lay carousel, five ways to wear the linen set.",           "attributes": { "channel": "instagram" }, "created_at": "2026-05-05T09:00:00Z" },
+      { "uuid": "n_maria",     "name": "@maria.styles",     "labels": ["Entity","Creator"],   "summary": "TikTok creator, 420k followers, posted the launch unboxing that drove the top positive spike.", "attributes": { "platform": "tiktok", "followers": 420000 }, "created_at": "2026-05-03T11:00:00Z" },
+      { "uuid": "n_weekend",   "name": "@weekendedits",     "labels": ["Entity","Creator"],   "summary": "Instagram editorial creator, early positive reaction to the hero image.", "attributes": { "platform": "instagram", "followers": 186000 }, "created_at": "2026-05-03T14:22:00Z" },
+      { "uuid": "n_aud_us",    "name": "US coastal 25-34",  "labels": ["Entity","Audience"],  "summary": "Primary US audience segment. Drives aspirational + creative positivity.", "attributes": { "market": "US" }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_aud_uk",    "name": "UK editorial 28-38","labels": ["Entity","Audience"],  "summary": "UK segment that flagged price objections and sizing confusion.", "attributes": { "market": "UK" }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_aud_au",    "name": "AU beach 22-30",    "labels": ["Entity","Audience"],  "summary": "AU segment — strongest quality + fit praise.",                  "attributes": { "market": "AU" }, "created_at": "2026-05-01T08:00:00Z" },
+      { "uuid": "n_comp_fast", "name": "FastTide",          "labels": ["Entity","Competitor"],"summary": "Fast-fashion competitor. Mentions position Coastline as the considered alternative.", "attributes": { "segment": "fast-fashion" }, "created_at": "2026-05-01T08:00:00Z" }
+    ],
+    "edges": [
+      { "source_node_uuid": "n_coastline", "target_node_uuid": "n_linen_set", "name": "launches",       "fact": "Coastline launches the linen set as the Summer 26 hero bundle.",                                  "created_at": "2026-05-01T08:00:00Z" },
+      { "source_node_uuid": "n_coastline", "target_node_uuid": "n_linen_tee", "name": "launches",       "fact": "Coastline ships the linen tee standalone at a lower entry price.",                                  "created_at": "2026-05-01T08:00:00Z" },
+      { "source_node_uuid": "n_coastline", "target_node_uuid": "n_trousers",  "name": "launches",       "fact": "Wide-leg trousers drop AU-first on week one.",                                                      "created_at": "2026-05-01T08:00:00Z" },
+      { "source_node_uuid": "n_hero_img",  "target_node_uuid": "n_coastline", "name": "promotes",       "fact": "Hero sunset image promotes the Coastline brand in the launch week IG feed.",                         "created_at": "2026-05-02T10:00:00Z" },
+      { "source_node_uuid": "n_hero_img",  "target_node_uuid": "n_linen_tee", "name": "features",       "fact": "Hero sunset features the linen tee as the on-model focus.",                                         "created_at": "2026-05-02T10:00:00Z" },
+      { "source_node_uuid": "n_tt_unbox",  "target_node_uuid": "n_linen_set", "name": "features",       "fact": "TikTok unbox opens the linen set bundle on camera.",                                                "created_at": "2026-05-03T11:00:00Z" },
+      { "source_node_uuid": "n_tt_unbox",  "target_node_uuid": "n_maria",     "name": "created_by",     "fact": "TikTok unbox was created by @maria.styles in exchange for a seeded kit.",                            "created_at": "2026-05-03T11:00:00Z" },
+      { "source_node_uuid": "n_yt_look",   "target_node_uuid": "n_linen_set", "name": "features",       "fact": "YouTube lookbook styles the linen set across three Saturdays.",                                     "created_at": "2026-05-04T12:00:00Z" },
+      { "source_node_uuid": "n_ig_carou",  "target_node_uuid": "n_linen_set", "name": "features",       "fact": "IG carousel shows five ways to wear the linen set — saved 1,800+ times in week one.",               "created_at": "2026-05-05T09:00:00Z" },
+      { "source_node_uuid": "n_hero_img",  "target_node_uuid": "n_aud_us",    "name": "targets",        "fact": "Hero image served primarily to the US coastal 25-34 segment on IG.",                                "created_at": "2026-05-02T10:00:00Z" },
+      { "source_node_uuid": "n_tt_unbox",  "target_node_uuid": "n_aud_us",    "name": "targets",        "fact": "TikTok unbox indexed hardest against US coastal 25-34 on the FYP.",                                  "created_at": "2026-05-03T11:00:00Z" },
+      { "source_node_uuid": "n_ig_carou",  "target_node_uuid": "n_aud_uk",    "name": "targets",        "fact": "Carousel was amplified to UK editorial 28-38 — where the save rate was highest.",                    "created_at": "2026-05-05T09:00:00Z" },
+      { "source_node_uuid": "n_trousers",  "target_node_uuid": "n_aud_au",    "name": "shipped_to",     "fact": "Wide-leg trousers shipped AU-first; AU audience posted the strongest fit praise.",                   "created_at": "2026-05-01T08:00:00Z" },
+      { "source_node_uuid": "n_maria",     "target_node_uuid": "n_aud_us",    "name": "reaches",        "fact": "@maria.styles' audience skews US coastal 25-34.",                                                    "created_at": "2026-05-03T11:00:00Z" },
+      { "source_node_uuid": "n_weekend",   "target_node_uuid": "n_hero_img",  "name": "mentioned_in",   "fact": "@weekendedits quoted the hero image in an early positive IG post.",                                 "created_at": "2026-05-03T14:22:00Z" },
+      { "source_node_uuid": "n_aud_uk",    "target_node_uuid": "n_linen_tee", "name": "criticized",     "fact": "UK editorial 28-38 flagged the linen tee as priced steep for what it is.",                           "created_at": "2026-05-06T19:47:00Z" },
+      { "source_node_uuid": "n_aud_au",    "target_node_uuid": "n_trousers",  "name": "loved_by",       "fact": "AU beach 22-30 loved the wide-leg trouser fit — positive sentiment 0.79.",                            "created_at": "2026-05-17T13:12:00Z" },
+      { "source_node_uuid": "n_coastline", "target_node_uuid": "n_comp_fast", "name": "competes_with",  "fact": "Coastline is positioned as the considered alternative to FastTide summer collabs.",                    "created_at": "2026-05-01T08:00:00Z" }
+    ]
+  }
 }

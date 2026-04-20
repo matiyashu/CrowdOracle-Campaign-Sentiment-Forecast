@@ -68,3 +68,16 @@ export function getProject(projectId) {
     method: 'get'
   })
 }
+
+/**
+ * 列出所有项目（用于跨项目 Graph 浏览）
+ * @param {Number} limit
+ * @returns {Promise}
+ */
+export function listProjects(limit = 50) {
+  return service({
+    url: `/api/graph/project/list`,
+    method: 'get',
+    params: { limit }
+  })
+}
