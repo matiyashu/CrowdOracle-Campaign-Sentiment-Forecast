@@ -74,6 +74,24 @@ Minimum to boot:
 Optional providers: `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, etc. Configure per-task
 routing in **Settings → Providers** once the app is running.
 
+## Deploying the frontend to Vercel
+
+The repo ships with a root [`vercel.json`](./vercel.json) that builds only the
+Vue app under [`frontend/`](./frontend) and serves it as a SPA (history-mode
+fallback included — deep links like `/app/graph` won't 404).
+
+1. Import the GitHub repo into Vercel. No overrides needed — `vercel.json`
+   handles the build command, output dir, and rewrites.
+2. Set `VITE_API_BASE_URL` in the Vercel project env to the public URL of your
+   Flask backend (deploy it separately — Render / Railway / Fly.io are all fine;
+   Vercel serverless won't host the simulation workers).
+3. Deploy. The first visit hits `/` (landing); `/app/*` routes are SPA-rewritten
+   to `index.html` so Vue Router can handle them.
+
+Without a backend URL the UI still renders, but any `/api/*` call will fail —
+configure the env var before expecting demo mode, Reality Seeds, or graph data
+to load.
+
 ## Author & credits
 
 - **Creator:** Prima Hanura Akbar
