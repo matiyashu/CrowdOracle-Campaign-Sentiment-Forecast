@@ -77,10 +77,12 @@ def create_app(config_class=Config):
     from .api.creatives import creatives_bp
     from .api.analytics import analytics_bp
     from .api.providers import providers_bp
+    from .api.demo import demo_bp
     app.register_blueprint(campaign_bp, url_prefix='/api/campaign')
     app.register_blueprint(creatives_bp, url_prefix='/api/creatives')
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(providers_bp, url_prefix='/api/providers')
+    app.register_blueprint(demo_bp, url_prefix='/api/demo')
 
     # Health check
     @app.route('/health')

@@ -40,6 +40,14 @@
       </ol>
     </section>
 
+    <section class="proof">
+      <span class="proof__label">BUILT ON</span>
+      <p>
+        The MiroFish multi-agent simulation engine · Used for launch forecasting
+        and post-campaign autopsies by product marketing teams.
+      </p>
+    </section>
+
     <section class="closer">
       <h2>Your next campaign deserves a second opinion.</h2>
       <router-link to="/app/demo" class="btn btn--primary">Load a demo campaign — no signup.</router-link>
@@ -145,6 +153,20 @@
   color: var(--co-text-dim);
 }
 .how li strong { color: var(--co-text); }
+
+.proof {
+  padding: 40px 32px;
+  text-align: center;
+  border-top: 1px solid var(--co-border);
+  display: flex; flex-direction: column; gap: 10px; align-items: center;
+}
+.proof__label {
+  font-size: 10px; letter-spacing: 0.2em; color: var(--co-text-dim);
+}
+.proof p {
+  max-width: 640px; font-size: 13px; line-height: 1.55;
+  color: var(--co-text-dim);
+}
 
 .closer {
   padding: 80px 32px;

@@ -1,0 +1,103 @@
+{
+  "package_id": "coastline_apparel_summer_26",
+  "title": "Coastline Apparel — Summer 26 Launch",
+  "description": "B2C apparel brand launching a summer capsule collection across Instagram, TikTok, and YouTube in the US, UK, and Australia. Use this package to explore creative scoring, sentiment deep-dives, and impact decomposition on a multi-channel launch.",
+  "campaign": {
+    "name": "Coastline Apparel — Summer 26",
+    "brand": "Coastline",
+    "objective": "Awareness and first-purchase conversion for the Summer 26 capsule.",
+    "markets": ["US", "UK", "AU"],
+    "channels": ["instagram", "tiktok", "youtube"],
+    "start_date": "2026-05-01",
+    "end_date": "2026-07-31",
+    "tags": ["lifestyle", "launch", "summer", "demo"],
+    "status": "active"
+  },
+  "creatives": [
+    {
+      "ref": "hero_sunset",
+      "file": "hero_sunset.jpg",
+      "asset_type": "image",
+      "channel": "instagram",
+      "cta": "Shop the drop",
+      "ocr_text": "Summer starts at the shoreline",
+      "visual_summary": "Model on rocky coast at golden hour wearing linen shirt in warm cream tones.",
+      "detected_hooks": ["golden-hour lifestyle", "coastal setting", "understated luxury"],
+      "emotional_tone": "aspirational",
+      "detected_topics": ["lifestyle", "coast", "apparel"],
+      "brand_logo_present": true,
+      "offer_clarity_score": 0.62
+    },
+    {
+      "ref": "tiktok_unbox",
+      "file": "tiktok_unbox.mp4",
+      "asset_type": "video",
+      "channel": "tiktok",
+      "cta": "Tap to try",
+      "transcript": "Opening the Coastline box — linen shirt, wide-leg trousers, straw hat. The stitching feels like summer.",
+      "visual_summary": "30-second TikTok unboxing with creator voiceover and close-up product shots.",
+      "detected_hooks": ["creator-led unboxing", "tactile product closeups"],
+      "emotional_tone": "excitement",
+      "detected_topics": ["unboxing", "creator", "fabric quality"],
+      "brand_logo_present": true,
+      "offer_clarity_score": 0.71
+    },
+    {
+      "ref": "yt_lookbook",
+      "file": "yt_lookbook.mp4",
+      "asset_type": "video",
+      "channel": "youtube",
+      "cta": "Watch the lookbook",
+      "transcript": "Three looks for three Saturdays. Meet us at the shoreline.",
+      "visual_summary": "90-second cinematic lookbook with three styled outfits and aerial coast drone footage.",
+      "detected_hooks": ["cinematic lookbook", "aerial shots", "aspirational cast"],
+      "emotional_tone": "aspirational",
+      "detected_topics": ["lookbook", "styling", "lifestyle"],
+      "brand_logo_present": true,
+      "offer_clarity_score": 0.55
+    },
+    {
+      "ref": "ig_carousel",
+      "file": "ig_styling_guide.jpg",
+      "asset_type": "image",
+      "channel": "instagram",
+      "cta": "Save for later",
+      "ocr_text": "Five ways to wear the linen set.",
+      "visual_summary": "Flat-lay carousel of styled outfits against raw beach textures.",
+      "detected_hooks": ["flat-lay styling", "save-worthy content"],
+      "emotional_tone": "helpful",
+      "detected_topics": ["styling guide", "flat-lay"],
+      "brand_logo_present": true,
+      "offer_clarity_score": 0.68
+    }
+  ],
+  "mentions": [
+    { "text": "The new Coastline collection looks incredible — that linen shirt is going in my cart.", "sentiment": "positive", "sentiment_score": 0.82, "aspect": "creative", "emotion": "excitement", "source_platform": "instagram", "author_handle": "@weekendedits", "engagement_count": 412, "created_at_source": "2026-05-03T14:22:00Z", "linked_asset_ref": "hero_sunset" },
+    { "text": "Wait the Coastline unboxing is so clean, the fabric looks amazing.", "sentiment": "positive", "sentiment_score": 0.78, "aspect": "quality", "emotion": "joy", "source_platform": "tiktok", "author_handle": "@maria.styles", "engagement_count": 2180, "created_at_source": "2026-05-05T09:11:00Z", "linked_asset_ref": "tiktok_unbox" },
+    { "text": "Love the vibe but these prices feel steep for what's essentially a linen tee.", "sentiment": "negative", "sentiment_score": -0.54, "aspect": "price", "emotion": "frustration", "source_platform": "twitter", "author_handle": "@kbudget", "engagement_count": 88, "created_at_source": "2026-05-06T19:47:00Z" },
+    { "text": "This lookbook made me book a beach weekend. Well done, @Coastline.", "sentiment": "positive", "sentiment_score": 0.91, "aspect": "creative", "emotion": "joy", "source_platform": "youtube", "author_handle": "@jordanm", "engagement_count": 64, "created_at_source": "2026-05-08T21:05:00Z", "linked_asset_ref": "yt_lookbook" },
+    { "text": "Shipping took 12 days and the hat arrived crushed. Not the launch experience I wanted.", "sentiment": "negative", "sentiment_score": -0.72, "aspect": "delivery", "emotion": "frustration", "source_platform": "twitter", "author_handle": "@auholmes", "engagement_count": 133, "created_at_source": "2026-05-10T08:30:00Z" },
+    { "text": "The 5-ways-to-style carousel is saved. Genius format.", "sentiment": "positive", "sentiment_score": 0.65, "aspect": "creative", "emotion": "joy", "source_platform": "instagram", "author_handle": "@dressing.room", "engagement_count": 294, "created_at_source": "2026-05-11T15:12:00Z", "linked_asset_ref": "ig_carousel" },
+    { "text": "The linen wrinkles immediately. Wish the photos had shown that.", "sentiment": "negative", "sentiment_score": -0.44, "aspect": "quality", "emotion": "frustration", "source_platform": "reddit", "engagement_count": 51, "created_at_source": "2026-05-12T11:04:00Z" },
+    { "text": "Their TikToks feel so effortless compared to the usual fast-fashion grind.", "sentiment": "positive", "sentiment_score": 0.58, "aspect": "brand_trust", "emotion": "joy", "source_platform": "tiktok", "engagement_count": 812, "created_at_source": "2026-05-13T20:01:00Z" },
+    { "text": "The UK size guide is confusing. Do I order my normal M or go up?", "sentiment": "neutral", "sentiment_score": 0.05, "aspect": "ux", "emotion": "confusion", "source_platform": "instagram", "engagement_count": 22, "created_at_source": "2026-05-14T07:45:00Z" },
+    { "text": "My third Coastline haul this year. They just get what summer should feel like.", "sentiment": "positive", "sentiment_score": 0.88, "aspect": "brand_trust", "emotion": "joy", "source_platform": "instagram", "engagement_count": 512, "created_at_source": "2026-05-15T18:22:00Z" },
+    { "text": "This is peak marketing, nothing actually new though. Same linen + beach story every brand is doing.", "sentiment": "negative", "sentiment_score": -0.37, "aspect": "creative", "emotion": "frustration", "source_platform": "twitter", "engagement_count": 212, "created_at_source": "2026-05-16T10:30:00Z" },
+    { "text": "Ordered the wide-leg trousers in AU — fit is perfect. Finally.", "sentiment": "positive", "sentiment_score": 0.79, "aspect": "quality", "emotion": "joy", "source_platform": "instagram", "engagement_count": 142, "created_at_source": "2026-05-17T13:12:00Z" },
+    { "text": "Summer capsule > fast fashion collabs this season, don't @ me.", "sentiment": "positive", "sentiment_score": 0.71, "aspect": "brand_trust", "emotion": "joy", "source_platform": "twitter", "engagement_count": 316, "created_at_source": "2026-05-18T16:48:00Z" },
+    { "text": "The YouTube ad plays too loud. Skipped in 3 seconds.", "sentiment": "negative", "sentiment_score": -0.41, "aspect": "ux", "emotion": "frustration", "source_platform": "youtube", "engagement_count": 19, "created_at_source": "2026-05-19T09:50:00Z", "linked_asset_ref": "yt_lookbook" },
+    { "text": "Coastline's offer page is finally readable on mobile. Thank you.", "sentiment": "positive", "sentiment_score": 0.55, "aspect": "ux", "emotion": "joy", "source_platform": "twitter", "engagement_count": 44, "created_at_source": "2026-05-20T11:30:00Z" }
+  ],
+  "performance": [
+    { "date": "2026-05-01", "channel": "instagram", "market": "US", "spend": 4200, "impressions": 182000, "reach": 131000, "clicks": 4320, "ctr": 0.0237, "engagements": 11200, "engagement_rate": 0.0615, "conversions": 62,  "cpa": 67.74, "cvr": 0.0143, "revenue": 9400,  "roas": 2.24 },
+    { "date": "2026-05-02", "channel": "instagram", "market": "US", "spend": 4600, "impressions": 198000, "reach": 142000, "clicks": 4810, "ctr": 0.0243, "engagements": 12200, "engagement_rate": 0.0616, "conversions": 71,  "cpa": 64.79, "cvr": 0.0148, "revenue": 10900, "roas": 2.37 },
+    { "date": "2026-05-03", "channel": "tiktok",   "market": "US", "spend": 3800, "impressions": 412000, "reach": 318000, "clicks": 6230, "ctr": 0.0151, "engagements": 28400, "engagement_rate": 0.0689, "conversions": 58,  "cpa": 65.52, "cvr": 0.0093, "revenue": 8800,  "roas": 2.32 },
+    { "date": "2026-05-04", "channel": "tiktok",   "market": "UK", "spend": 2100, "impressions": 221000, "reach": 178000, "clicks": 3120, "ctr": 0.0141, "engagements": 14900, "engagement_rate": 0.0674, "conversions": 31,  "cpa": 67.74, "cvr": 0.0099, "revenue": 4600,  "roas": 2.19 },
+    { "date": "2026-05-05", "channel": "youtube",  "market": "US", "spend": 5400, "impressions": 312000, "reach": 268000, "clicks": 2810, "ctr": 0.0090, "engagements":  4200, "engagement_rate": 0.0135, "conversions": 41,  "cpa": 131.7, "cvr": 0.0146, "revenue": 6200,  "roas": 1.15 },
+    { "date": "2026-05-06", "channel": "instagram", "market": "AU", "spend": 1800, "impressions": 88000,  "reach":  71000, "clicks": 2010, "ctr": 0.0228, "engagements":  5400, "engagement_rate": 0.0614, "conversions": 28,  "cpa": 64.29, "cvr": 0.0139, "revenue": 4200,  "roas": 2.33 },
+    { "date": "2026-05-07", "channel": "tiktok",   "market": "US", "spend": 4100, "impressions": 502000, "reach": 389000, "clicks": 7640, "ctr": 0.0152, "engagements": 34100, "engagement_rate": 0.0679, "conversions": 74,  "cpa": 55.41, "cvr": 0.0097, "revenue": 11800, "roas": 2.88 },
+    { "date": "2026-05-08", "channel": "instagram", "market": "US", "spend": 4900, "impressions": 212000, "reach": 151000, "clicks": 5110, "ctr": 0.0241, "engagements": 13100, "engagement_rate": 0.0618, "conversions": 82,  "cpa": 59.76, "cvr": 0.0160, "revenue": 12700, "roas": 2.59 },
+    { "date": "2026-05-09", "channel": "youtube",  "market": "UK", "spend": 3400, "impressions": 198000, "reach": 174000, "clicks": 1780, "ctr": 0.0090, "engagements":  2600, "engagement_rate": 0.0131, "conversions": 22,  "cpa": 154.5, "cvr": 0.0124, "revenue": 3100,  "roas": 0.91 },
+    { "date": "2026-05-10", "channel": "tiktok",   "market": "AU", "spend": 1500, "impressions": 148000, "reach": 118000, "clicks": 2150, "ctr": 0.0145, "engagements": 10100, "engagement_rate": 0.0682, "conversions": 22,  "cpa": 68.18, "cvr": 0.0102, "revenue": 3200,  "roas": 2.13 }
+  ]
+}
