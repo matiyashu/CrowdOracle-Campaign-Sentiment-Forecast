@@ -109,7 +109,7 @@
       { "filename": "coastline_creative_deck.pdf", "size": 2410800 }
     ],
     "ontology_analysis_summary": "Coastline universe: 1 Brand, 3 Products, 4 Creatives, 2 Creators, 3 Audience segments, 2 Competitors. 9 relation types (launches, promotes, targets, created_by, competes_with, loved_by, criticized_by, mentioned_in, shipped_to).",
-    "entities_count": 42,
+    "entities_count": 14,
     "profiles_count": 42,
     "entity_types": ["Brand", "Product", "Creative", "Creator", "Audience", "Competitor"],
     "total_rounds": 24,

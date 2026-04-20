@@ -52,6 +52,7 @@ const routes = [
             children: [
               { path: '',          redirect: (to) => ({ name: 'SeedGraph', params: { id: to.params.id } }) },
               { path: 'graph',     name: 'SeedGraph',     component: () => import('@/components/realityseeds/GraphPanel.vue') },
+              { path: 'entities',  name: 'SeedEntities',  component: () => import('@/components/realityseeds/EntitiesPanel.vue') },
               { path: 'split',     name: 'SeedSplit',     component: () => import('@/components/realityseeds/SplitPanel.vue') },
               { path: 'workbench', name: 'SeedWorkbench', component: () => import('@/components/realityseeds/WorkbenchPanel.vue') },
             ],

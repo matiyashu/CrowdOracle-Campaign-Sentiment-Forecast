@@ -19,6 +19,7 @@
 
     <nav class="seed__tabs">
       <router-link :to="{ name: 'SeedGraph',     params: { id } }" class="seed__tab">Graph</router-link>
+      <router-link :to="{ name: 'SeedEntities',  params: { id } }" class="seed__tab">Entities</router-link>
       <router-link :to="{ name: 'SeedSplit',     params: { id } }" class="seed__tab">Split</router-link>
       <router-link :to="{ name: 'SeedWorkbench', params: { id } }" class="seed__tab">Workbench</router-link>
     </nav>
