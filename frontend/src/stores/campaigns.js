@@ -2,6 +2,10 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { campaignApi } from '@/api/campaign'
 
+function unwrap(res) {
+  return res?.data?.data ?? res?.data ?? null
+}
+
 export const useCampaignsStore = defineStore('campaigns', () => {
   const list = ref([])
   const current = ref(null)
@@ -10,14 +14,14 @@ export const useCampaignsStore = defineStore('campaigns', () => {
 
   const byId = computed(() => (id) => list.value.find((c) => String(c.id) === String(id)))
 
-  async function loadList() {
+  async function loadList(params) {
     loading.value = true
     error.value = null
     try {
-      const { data } = await campaignApi.list()
-      list.value = data?.campaigns || data || []
+      list.value = unwrap(await campaignApi.list(params)) || []
     } catch (e) {
       error.value = e
+      list.value = []
     } finally {
       loading.value = false
     }
@@ -27,8 +31,7 @@ export const useCampaignsStore = defineStore('campaigns', () => {
     loading.value = true
     error.value = null
     try {
-      const { data } = await campaignApi.get(id)
-      current.value = data?.campaign || data
+      current.value = unwrap(await campaignApi.get(id))
       return current.value
     } catch (e) {
       error.value = e
@@ -39,15 +42,14 @@ export const useCampaignsStore = defineStore('campaigns', () => {
   }
 
   async function create(payload) {
-    const { data } = await campaignApi.create(payload)
-    const created = data?.campaign || data
-    list.value = [created, ...list.value]
+    const created = unwrap(await campaignApi.create(payload))
+    if (created) list.value = [created, ...list.value]
     return created
   }
 
   async function update(id, payload) {
-    const { data } = await campaignApi.patch(id, payload)
-    const updated = data?.campaign || data
+    const updated = unwrap(await campaignApi.patch(id, payload))
+    if (!updated) return null
     const i = list.value.findIndex((c) => String(c.id) === String(id))
     if (i !== -1) list.value[i] = updated
     if (current.value && String(current.value.id) === String(id)) current.value = updated

@@ -12,8 +12,9 @@ export const useAnalyticsStore = defineStore('analytics', () => {
     error.value = null
     try {
       const { data } = await analyticsApi.dashboard(campaignId)
-      dashboardByCampaign.value[campaignId] = data?.dashboard || data
-      return dashboardByCampaign.value[campaignId]
+      const payload = data?.data ?? data?.dashboard ?? data
+      dashboardByCampaign.value[campaignId] = payload
+      return payload
     } catch (e) {
       error.value = e
       throw e
