@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+  <defs>
+    <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff1e3c" stop-opacity="0.85"/>
+      <stop offset="55%" stop-color="#ff1e3c" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#ff1e3c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ff5060"/>
+      <stop offset="60%" stop-color="#d9001f"/>
+      <stop offset="100%" stop-color="#6a0010"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#0a0a0a"/>
+  <circle cx="22" cy="32" r="13" fill="url(#eyeGlow)"/>
+  <circle cx="42" cy="32" r="13" fill="url(#eyeGlow)"/>
+  <circle cx="22" cy="32" r="6.5" fill="url(#iris)"/>
+  <circle cx="42" cy="32" r="6.5" fill="url(#iris)"/>
+  <circle cx="22" cy="32" r="2" fill="#1a0005"/>
+  <circle cx="42" cy="32" r="2" fill="#1a0005"/>
+  <circle cx="23.2" cy="30.6" r="0.9" fill="#ffd5db" opacity="0.9"/>
+  <circle cx="43.2" cy="30.6" r="0.9" fill="#ffd5db" opacity="0.9"/>
+</svg>
