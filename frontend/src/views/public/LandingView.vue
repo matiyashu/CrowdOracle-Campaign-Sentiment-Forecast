@@ -49,7 +49,6 @@
       <span class="foot__brand">▶ CROWDORACLE</span>
       <nav>
         <router-link to="/product">Product</router-link>
-        <router-link to="/pricing">Pricing</router-link>
         <router-link to="/docs">Docs</router-link>
       </nav>
       <span class="foot__by">© 2026 · Built by Prima Hanura Akbar</span>

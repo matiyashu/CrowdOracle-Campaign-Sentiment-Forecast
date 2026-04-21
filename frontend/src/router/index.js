@@ -8,7 +8,6 @@ const routes = [
     children: [
       { path: '',        name: 'Landing',  component: () => import('@/views/public/LandingView.vue'),  meta: { shell: 'public' } },
       { path: 'product', name: 'Product',  component: () => import('@/views/public/ProductView.vue'),  meta: { shell: 'public' } },
-      { path: 'pricing', name: 'Pricing',  component: () => import('@/views/public/PricingView.vue'),  meta: { shell: 'public' } },
       { path: 'docs',    name: 'Docs',     component: () => import('@/views/public/DocsView.vue'),     meta: { shell: 'public' } },
       { path: 'login',   name: 'Login',    component: () => import('@/views/public/LoginView.vue'),    meta: { shell: 'public' } },
     ],

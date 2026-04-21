@@ -7,7 +7,6 @@
       </router-link>
       <nav class="public__links">
         <router-link to="/product">Product</router-link>
-        <router-link to="/pricing">Pricing</router-link>
         <router-link to="/docs">Docs</router-link>
       </nav>
       <div class="public__cta">
