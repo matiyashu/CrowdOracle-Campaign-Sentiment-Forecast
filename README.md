@@ -2,7 +2,7 @@
 
 **Multi-agent marketing intelligence — see the reaction before you ship the campaign.**
 
-CrowdOracle (repo name: *BigBrother — Campaign Sentiment Forecast*) is an
+CrowdOracle is an
 open-source platform that rehearses a marketing campaign against a simulated
 audience *before* launch, then ingests the real-world signal after launch and
 compares the two. Created and maintained by **Prima Hanura Akbar**.
