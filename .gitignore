@@ -2,8 +2,11 @@
 .env
 *.env.local
 
-# Local tooling
-.claude/
+# Local tooling — keep .claude/skills/ tracked so behavioral guidelines
+# travel with the repo; ignore everything else under .claude/.
+.claude/*
+!.claude/skills/
+!.claude/skills/**
 
 # Python
 __pycache__/
