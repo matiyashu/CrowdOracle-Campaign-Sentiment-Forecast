@@ -19,7 +19,7 @@ Licensed under **AGPL-3.0** — free to self-host and fork.
 - [Architecture](#architecture)
 - [Getting started](#getting-started)
 - [Demo mode](#demo-mode)
-- [Deploying the frontend to Vercel](#deploying-the-frontend-to-vercel)
+- [Deploying](#deploying)
 - [Author & credits](#author--credits)
 - [License](#license)
 
@@ -171,7 +171,40 @@ Want to kick the tires without supplying a brief or Zep credentials?
 4. Browse `/app/graph` (cross-project god's-eye view), click into the Reality
    Seed, try the **Entities** tab, then open the campaign to read the report.
 
-## Deploying the frontend to Vercel
+## Deploying
+
+The frontend deploys to Vercel as a static SPA; the backend deploys separately
+to a host that can run a long-lived Python process. The instructions below cover
+**Railway** for the backend — adapt freely for Render / Fly.io.
+
+### 1. Backend → Railway
+
+The repo ships with a [`Procfile`](./Procfile) and [`nixpacks.toml`](./nixpacks.toml)
+so Railway builds and starts the Flask app under gunicorn out of the box.
+
+1. Push the repo to GitHub if you haven't already.
+2. In Railway → **New Project** → **Deploy from GitHub repo** → pick this repo.
+3. Railway autodetects Nixpacks and reads `nixpacks.toml`. It installs
+   `tesseract-ocr` + `ffmpeg` (needed by `pytesseract` / `moviepy`) and
+   `pip install -r backend/requirements.txt`. Build is several minutes — the
+   image is fat by design.
+4. Under **Settings → Networking** click **Generate Domain** to get a public
+   URL like `https://crowdoracle-production.up.railway.app`.
+5. (Optional) Under **Variables** set any of:
+   - `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL_NAME` — only needed for non-demo
+     simulation features
+   - `ZEP_API_KEY` — only needed if you want non-demo Zep graphs
+   - `SECRET_KEY` — recommended in production
+6. Hit the health check: `https://<your-domain>/health` should return
+   `{"status": "ok", ...}`.
+
+**Demo data persistence:** the default `DATABASE_URL` is SQLite stored on
+the container's local disk. Railway containers are ephemeral — every redeploy
+or sleep/wake wipes demo campaigns and the `backend/uploads/` fixtures. Users
+can re-click "Load this demo" any time. If you want persistence, attach Railway
+Postgres and set `DATABASE_URL` to the connection string.
+
+### 2. Frontend → Vercel
 
 The repo ships with a root [`vercel.json`](./vercel.json) that builds only the
 Vue app under [`frontend/`](./frontend) and serves it as a SPA (history-mode
@@ -179,16 +212,22 @@ fallback included — deep links like `/app/graph` won't 404).
 
 1. Import the GitHub repo into Vercel. No overrides needed — `vercel.json`
    handles the build command, output directory, and rewrites.
-2. Set `VITE_API_BASE_URL` in the Vercel project env to the public URL of your
-   Flask backend (deploy it separately — Render / Railway / Fly.io are all fine;
-   Vercel serverless won't host the simulation workers because runs are
-   stateful and multi-round).
-3. Deploy. The first visit hits `/` (landing); `/app/*` routes are SPA-
-   rewritten to `index.html` so Vue Router can handle them.
+2. Under **Settings → Environment Variables** set `VITE_API_BASE_URL` to the
+   public Railway URL from step 1.4 (no trailing slash — e.g.
+   `https://crowdoracle-production.up.railway.app`). Make sure to enable it
+   for the **Production** environment.
+3. Redeploy (or trigger a new deploy by pushing to `main`). Vercel injects
+   the env var at build time.
+4. The first visit hits `/` (landing); `/app/*` routes are SPA-rewritten to
+   `index.html` so Vue Router can handle them. Open `/app/demo`, click
+   **Load this demo** on a package — you should land on the seeded
+   campaign workspace.
 
-Without a backend URL the UI still renders, but any `/api/*` call will fail —
-configure the env var before expecting demo mode, Reality Seeds, or graph data
-to load.
+**If demo mode shows nothing or errors silently:** open the browser DevTools
+console. The frontend logs a clear error when `VITE_API_BASE_URL` is missing
+in a production build. Network errors with a target of `localhost:5001`
+mean the env var didn't make it into the build — re-check Vercel env config
+and redeploy.
 
 ## Author & credits
 

@@ -1,9 +1,23 @@
 import axios from 'axios'
 import i18n from '../i18n'
 
+const envBase = import.meta.env.VITE_API_BASE_URL
+const baseURL = envBase || (import.meta.env.DEV ? 'http://localhost:5001' : '')
+
+if (!envBase && !import.meta.env.DEV) {
+  // Production build with no backend URL — every /api/* call will hit the SPA's
+  // own origin and get rewritten to index.html, producing confusing parse errors.
+  // Surface this loudly so it shows up in the browser console.
+  console.error(
+    '[CrowdOracle] VITE_API_BASE_URL is not set. ' +
+    'Configure it in your hosting provider (e.g. Vercel) to point at your backend, ' +
+    'otherwise demo mode and all /api/* calls will fail.'
+  )
+}
+
 // 创建axios实例
 const service = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001',
+  baseURL,
   timeout: 300000, // 5分钟超时（本体生成可能需要较长时间）
   headers: {
     'Content-Type': 'application/json'
