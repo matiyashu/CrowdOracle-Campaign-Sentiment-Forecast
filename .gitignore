@@ -2,11 +2,10 @@
 .env
 *.env.local
 
-# Local tooling — keep .claude/skills/ tracked so behavioral guidelines
-# travel with the repo; ignore everything else under .claude/.
-.claude/*
-!.claude/skills/
-!.claude/skills/**
+# Local tooling — Claude Code config, skills, and project memory stay
+# on the dev machine and are never pushed to the remote.
+.claude/
+CLAUDE.md
 
 # Python
 __pycache__/
