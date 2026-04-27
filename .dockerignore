@@ -1,0 +1,27 @@
+.git
+.github
+.claude
+.vscode
+
+# Frontend (Vercel builds this; backend image doesn't need it)
+frontend
+vercel.json
+
+# Local dev / build artifacts
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+**/node_modules
+**/dist
+
+# Local-only state
+backend/instance
+backend/logs
+backend/uploads
+.env
+*.log
+
+# Docs
+README.md
+CLAUDE.md
